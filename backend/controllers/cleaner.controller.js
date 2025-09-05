@@ -222,9 +222,42 @@ const clockOut = async (req, res) => {
     }
 };
 
+const isUserClockedIn = async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        // Find an active clocked-in job
+        const activeClock = await Clock.findOne({
+            userId,
+            status: "clockedIn",
+        }).select("-__v");
+
+        if (activeClock) {
+            return res.json({
+                success: true,
+                isClockedIn: true,
+                job: activeClock,
+            });
+        }
+
+        return res.json({
+            success: true,
+            isClockedIn: false,
+            job: null,
+        });
+    } catch (err) {
+        console.error("isUserClockedIn Error:", err);
+        return res.status(500).json({
+            success: false,
+            message: "Server error",
+        });
+    }
+};
+
 module.exports = {
     getTodaysClockForCleaner,
     get7dayClockForCleaner,
     clockIn,
     clockOut,
+    isUserClockedIn,
 };

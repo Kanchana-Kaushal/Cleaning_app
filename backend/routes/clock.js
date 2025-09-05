@@ -7,7 +7,7 @@ const {
 } = require("../controllers/cleaner.controller");
 
 // ✅ GET today's work assignments for the logged-in cleaner
-router.get("/clocks", auth(["cleaner"]), getTodaysClockForCleaner);
+router.get("/clock-status/today", auth(["cleaner"]), getTodaysClockForCleaner);
 
 // ✅ GET last 7 days clock-in/out history (cleaner only)
 router.get("/clock-history", auth(["cleaner"]), get7dayClockForCleaner);
